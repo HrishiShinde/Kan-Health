@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block content %}
+<div class="container mt-3">
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">Profile</h3>
+            <form method="post" class="needs-validation" novalidate>
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_age" class="form-label">Age</label>
+                    <input type="number" id="id_age" name="age" value="{{ user_profile.age }}" class="form-control" required>
+                    <div class="invalid-feedback">
+                        Please provide your age.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="id_gender" class="form-label">Gender</label>
+                    <select id="id_gender" name="gender" class="form-select" required>
+                        <option value="male" {% if user_profile.gender == 'male' %} selected {% endif %}>Male</option>
+                        <option value="female" {% if user_profile.gender == 'female' %} selected {% endif %}>Female</option>
+                        <option value="other" {% if user_profile.gender == 'other' %} selected {% endif %}>Other</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Please select your gender.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="id_health_history" class="form-label">Health History</label>
+                    <textarea id="id_health_history" name="health_history" class="form-control" rows="4">{{ user_profile.health_history }}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="id_medications" class="form-label">Medications</label>
+                    <textarea id="id_medications" name="medications" class="form-control" rows="4">{{ user_profile.medications }}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="id_allergies" class="form-label">Allergies</label>
+                    <textarea id="id_allergies" name="allergies" class="form-control" rows="4">{{ user_profile.allergies }}</textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Save Profile</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// JavaScript to enable client-side validation with Bootstrap
+(function() {
+    'use strict';
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.querySelectorAll('.needs-validation');
+
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms)
+        .forEach(function(form) {
+            form.addEventListener('submit', function(event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                form.classList.add('was-validated');
+            }, false);
+        });
+})();
+</script>
+{% endblock %}

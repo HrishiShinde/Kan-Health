@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Consult
+{% endblock %}
+
+{% block content %}
+<div class="container mt-3">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="mt-5">Symptom Checker</h4>
+            <form method="post" action="{% url 'consult' %}" class="needs-validation mt-3" novalidate>
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="id_symptoms" class="form-label">Describe your symptoms</label>
+                    <textarea id="id_symptoms" name="symptoms" class="form-control" rows="4" placeholder="E.g., Coughing, headache, and fever" required>{{ symptom_form.data.symptoms }}</textarea>
+                    {% if symptom_form.errors.symptoms %}
+                        <div class="invalid-feedback">
+                            {{ symptom_form.errors.symptoms }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_symptom_onset" class="form-label">When did the symptoms start?</label>
+                    <input type="text" id="id_symptom_onset" name="symptom_onset" class="form-control" value="{{ symptom_form.data.symptom_onset }}" placeholder="E.g., Since morning, Since two days, etc." required>
+                    {% if symptom_form.errors.symptom_onset %}
+                        <div class="invalid-feedback">
+                            {{ symptom_form.errors.symptom_onset }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_symptom_severity" class="form-label">Severity of symptoms</label>
+                    <select id="id_symptom_severity" name="symptom_severity" class="form-select" required>
+                        <option value="" selected disabled>Select severity</option>
+                        {% for value, label in symptom_form.fields.symptom_severity.choices %}
+                            <option value="{{ value }}" {% if value == symptom_form.data.symptom_severity %} selected {% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                    {% if symptom_form.errors.symptom_severity %}
+                        <div class="invalid-feedback">
+                            {{ symptom_form.errors.symptom_severity }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_symptom_frequency" class="form-label">Frequency of symptoms</label>
+                    <select id="id_symptom_frequency" name="symptom_frequency" class="form-select" required>
+                        <option value="" selected disabled>Select frequency</option>
+                        {% for value, label in symptom_form.fields.symptom_frequency.choices %}
+                            <option value="{{ value }}" {% if value == symptom_form.data.symptom_frequency %} selected {% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                    {% if symptom_form.errors.symptom_frequency %}
+                        <div class="invalid-feedback">
+                            {{ symptom_form.errors.symptom_frequency }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_symptom_triggers" class="form-label">What triggers your symptoms?</label>
+                    <textarea id="id_symptom_triggers" name="symptom_triggers" class="form-control" rows="2" placeholder="E.g., Exposure to cold air or pollen">{{ symptom_form.data.symptom_triggers }}</textarea>
+                    {% if symptom_form.errors.symptom_triggers %}
+                        <div class="invalid-feedback">
+                            {{ symptom_form.errors.symptom_triggers }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_symptom_relievers" class="form-label">What relieves your symptoms?</label>
+                    <textarea id="id_symptom_relievers" name="symptom_relievers" class="form-control" rows="2" placeholder="E.g., Resting or taking medication">{{ symptom_form.data.symptom_relievers }}</textarea>
+                    {% if symptom_form.errors.symptom_relievers %}
+                        <div class="invalid-feedback">
+                            {{ symptom_form.errors.symptom_relievers }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn btn-primary">Consult</button>
+            </form>
+            
+            {% if ai_response %}
+                <div class="mt-5">
+                    <h4>Personalized Health Plans</h4>
+                    {% for plan in ai_response %}
+                        <div class="mb-4">
+                            <h5>{{ plan }}</h5>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

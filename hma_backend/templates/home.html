@@ -1,0 +1,21 @@
+<!-- home.html -->
+{% extends 'base.html' %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+<div class="container d-flex align-items-center justify-content-center" style="height: 100vh;">
+    <div class="row">
+        <div class="col-12 text-center">
+            <div class="mb-3">
+                <a href="{% url 'consult' %}" class="btn btn-primary" style="width: 150px;">Get Health Plans</a>
+            </div>
+            <div class="mb-3">
+                <a href="{% url 'profile' %}" class="btn btn-secondary" style="width: 150px;">Set Health Preferences</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
